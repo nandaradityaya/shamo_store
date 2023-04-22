@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo_store/providers/product_provider.dart';
 import 'package:shamo_store/theme.dart';
 
 class SplashPage extends StatefulWidget {
@@ -14,12 +16,18 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     // TODO: implement initState
-    Timer(
-      Duration(seconds: 3),
-      () => Navigator.pushNamed(context, '/sign-in'),
-    );
+
+    getInit();
 
     super.initState();
+  }
+
+  // set timer splash screen jadi pake kaya gini
+  getInit() async {
+    await Provider.of<ProductProvider>(context, listen: false)
+        .getProducts(); // panggil fungsi getProducts dari ProductProvider | listen: false biar ga rebuild
+
+    Navigator.pushNamed(context, '/sign-in');
   }
 
   @override

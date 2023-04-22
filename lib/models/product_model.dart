@@ -37,7 +37,7 @@ class ProductModel {
         'category']); // karena category itu object, jadi kita buat objectnya dulu baru diisi datanya dari json yang dikirim dari API (relasi antara product dan category)
     galleries = json['galleries']
         .map<GalleryModel>((gallery) => GalleryModel.fromJson(gallery))
-        .toList(); // map galeri dari json ke GalleryModel. tolList() artinya kita akan mengubahnya menjadi List
+        .toList(); // <GaleryModel> untuk mengubahnya menjadi List<GalleryModel> | map galeri dari json ke GalleryModel. tolList() artinya kita akan mengubahnya menjadi List
     createdAt = DateTime.parse(
         json['created_at']); // ubah ke DateTime karena di API itu string
     updatedAt = DateTime.parse(

@@ -11,6 +11,7 @@ import 'package:shamo_store/pages/cart_page.dart';
 import 'package:shamo_store/pages/checkout_page.dart';
 import 'package:shamo_store/pages/checkout_success_page.dart';
 import 'package:shamo_store/providers/auth_provider.dart';
+import 'package:shamo_store/providers/product_provider.dart';
 // import 'theme.dart';
 
 void main() => runApp(const MyApp());
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (context) =>
                 AuthProvider()), // auth provider untuk login dan register user ke API
+        ChangeNotifierProvider(
+            create: (context) =>
+                ProductProvider()) // product provider untuk mengambil data product dari API
       ], // multi provider untuk memasukkan banyak provider
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
