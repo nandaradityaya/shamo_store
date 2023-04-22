@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_store/theme.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo_store/models/product_model.dart';
+import 'package:shamo_store/providers/wishlist_provider.dart';
 
 class WishlistCard extends StatelessWidget {
-  const WishlistCard({super.key});
+  const WishlistCard({Key? key, required this.product}) : super(key: key);
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
+    WishlistProvider wishlistProvider =
+        Provider.of<WishlistProvider>(context); // panggil provider wishlist
+
     return Container(
       margin: const EdgeInsets.only(
         top: 20,
@@ -23,8 +31,8 @@ class WishlistCard extends StatelessWidget {
       child: Row(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            'assets/image_shoes.png',
+          child: Image.network(
+            product.galleries[0].url,
             width: 60,
           ),
         ),
@@ -36,21 +44,26 @@ class WishlistCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'COURT VISION 2.0',
+                product.name,
                 style: primaryTextStyle.copyWith(
                   fontWeight: semiBold,
                 ),
               ),
               Text(
-                '\$57,15',
+                '\$${product.price}',
                 style: priceTextStyle,
               ),
             ],
           ),
         ),
-        Image.asset(
-          'assets/button_wishlist_active.png',
-          width: 34,
+        GestureDetector(
+          onTap: () {
+            wishlistProvider.setProduct(product);
+          },
+          child: Image.asset(
+            'assets/button_wishlist_active.png',
+            width: 34,
+          ),
         ),
       ]),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shamo_store/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_store/models/product_model.dart';
+import 'package:shamo_store/providers/wishlist_provider.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key, required this.product}) : super(key: key);
@@ -32,11 +33,10 @@ class _ProductPageState extends State<ProductPage> {
   ];
 
   int currentIndex = 0;
-  bool isWishlist = false;
 
   @override
   Widget build(BuildContext context) {
-    // WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     // CartProvider cartProvider = Provider.of<CartProvider>(context);
 
     Future<void> showSuccessDialog() async {
@@ -271,11 +271,9 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        isWishlist =
-                            !isWishlist; // agar wishlist nya bisa di klik
-                      });
-                      if (isWishlist) {
+                      wishlistProvider.setProduct(widget.product);
+
+                      if (wishlistProvider.isWishlist(widget.product)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: primaryColor,
@@ -300,7 +298,7 @@ class _ProductPageState extends State<ProductPage> {
                       }
                     },
                     child: Image.asset(
-                      isWishlist
+                      wishlistProvider.isWishlist(widget.product)
                           ? 'assets/button_wishlist_active.png'
                           : 'assets/button_wishlist.png',
                       width: 46,
