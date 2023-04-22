@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_store/models/user_model.dart';
 import 'package:shamo_store/providers/auth_provider.dart';
-// import 'package:shamo_store/providers/product_provider.dart';
+import 'package:shamo_store/providers/product_provider.dart';
 import 'package:shamo_store/theme.dart';
 import 'package:shamo_store/widgets/product_card.dart';
 import 'package:shamo_store/widgets/product_tile.dart';
@@ -15,7 +15,8 @@ class HomePage extends StatelessWidget {
     AuthProvider authProvider = Provider.of<AuthProvider>(
         context); // ambil data user dari auth provider
     UserModel user = authProvider.user; // ambil data user dari auth provider
-    // ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    ProductProvider productProvider = Provider.of<ProductProvider>(
+        context); // ambil data product dari product provider
 
     Widget header() {
       return Container(
@@ -177,11 +178,11 @@ class HomePage extends StatelessWidget {
                 width: defaultMargin,
               ),
               Row(
-                children: [
-                  ProductCard(),
-                  ProductCard(),
-                  ProductCard(),
-                ],
+                children: productProvider.products
+                    .map(
+                      (product) => ProductCard(product: product),
+                    )
+                    .toList(),
               ),
             ],
           ),
@@ -207,12 +208,13 @@ class HomePage extends StatelessWidget {
       return Container(
           margin: EdgeInsets.only(top: 14),
           child: Column(
-            children: const [
-              ProductTile(),
-              ProductTile(),
-              ProductTile(),
-              ProductTile(),
-            ],
+            children: productProvider.products
+                .map(
+                  (product) => ProductTile(
+                    product: product,
+                  ),
+                )
+                .toList(),
           ));
     }
 
