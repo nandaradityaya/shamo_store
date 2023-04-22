@@ -12,6 +12,7 @@ import 'package:shamo_store/pages/checkout_page.dart';
 import 'package:shamo_store/pages/checkout_success_page.dart';
 import 'package:shamo_store/providers/auth_provider.dart';
 import 'package:shamo_store/providers/product_provider.dart';
+import 'package:shamo_store/providers/cart_provider.dart';
 import 'package:shamo_store/providers/wishlist_provider.dart';
 // import 'theme.dart';
 
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
                 ProductProvider()), // product provider untuk mengambil data product dari API
         ChangeNotifierProvider(
           create: (context) => WishlistProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
         ),
       ], // multi provider untuk memasukkan banyak provider
       child: MaterialApp(

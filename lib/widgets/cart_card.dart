@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:shamo_store/models/cart_model.dart';
-// import 'package:shamo_store/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo_store/models/cart_model.dart';
+import 'package:shamo_store/providers/cart_provider.dart';
 import 'package:shamo_store/theme.dart';
 
 class CartCard extends StatelessWidget {
-  // const CartCard({Key? key, required this.cart}) : super(key: key);
+  const CartCard({Key? key, required this.cart}) : super(key: key);
 
-  // final CartModel cart;
+  final CartModel cart;
 
   @override
   Widget build(BuildContext context) {
-    // CartProvider cartProvider = Provider.of<CartProvider>(context);
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
 
     return Container(
       margin: EdgeInsets.only(
@@ -34,8 +34,8 @@ class CartCard extends StatelessWidget {
                 height: 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/image_shoes.png'),
+                  image: DecorationImage(
+                    image: NetworkImage(cart.product.galleries[0].url),
                   ),
                 ),
               ),
@@ -48,13 +48,13 @@ class CartCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Terrex Urban Low',
+                      cart.product.name,
                       style: primaryTextStyle.copyWith(
                         fontWeight: semiBold,
                       ),
                     ),
                     Text(
-                      '\$143,98',
+                      '\$${cart.product.price}',
                       style: priceTextStyle,
                     )
                   ],
@@ -63,7 +63,10 @@ class CartCard extends StatelessWidget {
               Column(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      cartProvider.addQuantity(cart
+                          .id); // panggil method addQuantity dari cartProvider untuk menambah quantity
+                    },
                     child: Image.asset(
                       'assets/button_add.png',
                       width: 16,
@@ -73,7 +76,8 @@ class CartCard extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    '2',
+                    cart.quantity
+                        .toString(), // toString untuk mengubah int ke string, karena text hanya menerima string sedangkan quantity typenya intger
                     style: primaryTextStyle.copyWith(
                       fontWeight: medium,
                     ),
@@ -82,7 +86,10 @@ class CartCard extends StatelessWidget {
                     height: 2,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      cartProvider.reduceQuantity(cart
+                          .id); // panggil method reduceQuantity dari cartProvider untuk mengurangi quantity
+                    },
                     child: Image.asset(
                       'assets/button_min.png',
                       width: 16,
@@ -96,7 +103,10 @@ class CartCard extends StatelessWidget {
             height: 12,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              cartProvider.removeCart(cart
+                  .id); // panggil method removeCart dari cartProvider untuk menghapus cart
+            },
             child: Row(children: [
               Image.asset(
                 'assets/icon_remove.png',

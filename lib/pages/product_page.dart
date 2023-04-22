@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shamo_store/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo_store/models/product_model.dart';
+import 'package:shamo_store/providers/cart_provider.dart';
 import 'package:shamo_store/providers/wishlist_provider.dart';
 
 class ProductPage extends StatefulWidget {
@@ -37,7 +38,8 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
-    // CartProvider cartProvider = Provider.of<CartProvider>(context);
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context); // panggil provider cart
 
     Future<void> showSuccessDialog() async {
       return showDialog(
@@ -440,7 +442,9 @@ class _ProductPageState extends State<ProductPage> {
                       height: 54,
                       child: TextButton(
                         onPressed: () {
-                          showSuccessDialog();
+                          cartProvider.addCart(widget
+                              .product); // ini untuk menambahkan product ke cart
+                          showSuccessDialog(); // setelah berhasil di tambahkan maka munculin dialog success
                         },
                         style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(

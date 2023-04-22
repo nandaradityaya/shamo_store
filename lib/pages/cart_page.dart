@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_store/theme.dart';
 import 'package:shamo_store/widgets/cart_card.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo_store/providers/cart_provider.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // CartProvider cartProvider = Provider.of<CartProvider>(context);
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
 
     PreferredSize header() {
       return PreferredSize(
@@ -104,9 +106,13 @@ class CartPage extends StatelessWidget {
         //       ),
         //     )
         //     .toList(),
-        children: [
-          CartCard(),
-        ],
+        children: cartProvider.carts
+            .map(
+              (cart) => CartCard(
+                cart: cart,
+              ),
+            )
+            .toList(),
       );
     }
 
@@ -125,7 +131,7 @@ class CartPage extends StatelessWidget {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '\$287,96',
+                    '\$${cartProvider.totalPrice()}',
                     style: priceTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
@@ -186,11 +192,12 @@ class CartPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor3, appBar: header(), body: content(),
-      bottomNavigationBar: customBottomNav(),
-      // body: cartProvider.carts.isEmpty ? emptyCart() : content(),
-      // bottomNavigationBar:
-      //     cartProvider.carts.isEmpty ? const SizedBox() : customBottomNav(),
+      backgroundColor: backgroundColor3,
+      appBar: header(),
+      body: cartProvider.carts.isEmpty ? emptyCart() : content(),
+      bottomNavigationBar: cartProvider.carts.isEmpty
+          ? const SizedBox()
+          : customBottomNav(), // jika tidak ada cart maka tidak akan menampilkan bottom navigation makanya cuma di kasih SizedBox kosong
     );
   }
 }
