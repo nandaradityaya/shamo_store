@@ -12,7 +12,13 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductPage(
+                product: product,
+              ),
+            )); // MaterialPageRoute buat bikin page baru | dia alam ngebuild ProductPage yang berisi product: product
       },
       child: Container(
           margin: const EdgeInsets.only(
