@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shamo_store/theme.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo_store/models/user_model.dart';
+import 'package:shamo_store/providers/auth_provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(
+        context); // ambil data user dari auth provider
+    UserModel user = authProvider.user; // ambil data user dari auth provider
+
     Widget header() {
       return AppBar(
         backgroundColor: backgroundColor1,
@@ -19,8 +26,8 @@ class ProfilePage extends StatelessWidget {
             child: Row(
               children: [
                 ClipOval(
-                  child: Image.asset(
-                    'assets/image_profile.png',
+                  child: Image.network(
+                    user.profilePhotoUrl,
                     width: 64,
                   ),
                 ),
@@ -32,14 +39,14 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hallo, Nanda',
+                        'Hallo, ${user.name}',
                         style: primaryTextStyle.copyWith(
                           fontSize: 24,
                           fontWeight: semiBold,
                         ),
                       ),
                       Text(
-                        '@nandaradityaya',
+                        '@${user.username}',
                         style: subtitleTextStyle.copyWith(
                           fontSize: 16,
                         ),
